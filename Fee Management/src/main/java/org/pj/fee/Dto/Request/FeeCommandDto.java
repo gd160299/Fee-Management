@@ -1,4 +1,4 @@
-package org.pj.fee.Dto;
+package org.pj.fee.Dto.Request;
 
 import lombok.Getter;
 import lombok.Setter;

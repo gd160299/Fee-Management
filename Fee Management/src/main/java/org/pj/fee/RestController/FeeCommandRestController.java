@@ -1,10 +1,12 @@
 package org.pj.fee.RestController;
 
-import org.pj.fee.Dto.FeeCommandDto;
-import org.pj.fee.Service.FeeCommandManagementService;
+import org.pj.fee.Dto.Request.FeeCommandDto;
+import org.pj.fee.Dto.Response.Response;
+import org.pj.fee.Service.FeeCommand.FeeCommandManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,16 +19,16 @@ import javax.validation.Valid;
 @RequestMapping("/api/fee-commands")
 public class FeeCommandRestController {
 
-    private static final Logger logger = LoggerFactory.getLogger(FeeCommandRestController.class);
-
     @Autowired
     private FeeCommandManagementService feeCommandManagementService;
 
     @PostMapping("/add")
-    public ResponseEntity<String> addFeeCommand(@RequestBody @Valid FeeCommandDto feeCommandDto) {
-        logger.info("Received request to add fee command with requestId: {}", feeCommandDto.getRequestId());
+    public ResponseEntity<Response<String>> addFeeCommand(@RequestBody @Valid FeeCommandDto feeCommandDto) {
         feeCommandManagementService.addFeeCommand(feeCommandDto);
-        logger.info("Fee command added successfully for requestId: {}", feeCommandDto.getRequestId());
-        return ResponseEntity.ok("Fee command added successfully.");
+        Response<String> response = Response.<String>builder()
+                .status(HttpStatus.OK.value())
+                .message("Fee command added successfully.")
+                .build();
+        return ResponseEntity.ok(response);
     }
 }

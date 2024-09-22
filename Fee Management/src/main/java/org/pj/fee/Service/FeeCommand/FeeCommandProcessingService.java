@@ -1,6 +1,6 @@
-package org.pj.fee.Service;
+package org.pj.fee.Service.FeeCommand;
 
-import org.pj.fee.Dto.FeeCommandDto;
+import org.pj.fee.Dto.Request.FeeCommandDto;
 import org.pj.fee.Entity.FeeTransaction;
 import org.pj.fee.Enum.TransactionStatus;
 import org.pj.fee.Exception.CustomException;
@@ -26,11 +26,7 @@ public class FeeCommandProcessingService {
     private FeeTransactionRepository feeTransactionRepository;
 
     @Autowired
-    private RedisTemplate<String
-
-            ,
-
-            Object> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     public void processFeeCommand(FeeCommandDto feeCommandDto) {
         logger.info("Begin processFeeCommand with requestId: {}", feeCommandDto.getRequestId());
