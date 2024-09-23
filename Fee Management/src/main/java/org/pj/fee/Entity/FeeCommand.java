@@ -1,8 +1,6 @@
 package org.pj.fee.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -13,6 +11,8 @@ import java.time.LocalDateTime;
 @Data
 public class FeeCommand {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "fee_command_seq_gen")
+    @SequenceGenerator(name = "fee_command_seq_gen", sequenceName = "FEE_COMMAND_SEQ", allocationSize = 1)
     private Long id;
     private String commandCode;
     private int totalRecord;

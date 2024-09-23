@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL) // Bỏ qua các giá trị null trong JSON trả về
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Response<T> {
     private int status;
     private String message;

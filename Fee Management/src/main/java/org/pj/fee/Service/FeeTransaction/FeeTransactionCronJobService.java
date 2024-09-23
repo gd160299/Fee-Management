@@ -5,7 +5,6 @@ import org.pj.fee.Enum.TransactionStatus;
 import org.pj.fee.Repository.FeeTransactionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +15,11 @@ import java.util.List;
 public class FeeTransactionCronJobService {
     private static final Logger logger = LoggerFactory.getLogger(FeeTransactionCronJobService.class);
 
-    @Autowired
-    private FeeTransactionRepository feeTransactionRepository;
+    private final FeeTransactionRepository feeTransactionRepository;
+
+    public FeeTransactionCronJobService(FeeTransactionRepository feeTransactionRepository) {
+        this.feeTransactionRepository = feeTransactionRepository;
+    }
 
     // Job chạy mỗi 3 phút
     @Scheduled(cron = "0 */3 * * * ?")
@@ -29,7 +31,7 @@ public class FeeTransactionCronJobService {
 
         for (FeeTransaction transaction : transactions) {
             transaction.setTotalScan(transaction.getTotalScan() + 1);
-            transaction.setModifiedDate(LocalDateTime.now());
+            transaction.setModifiedDate(LocalDateTime.now() );
 
             if (transaction.getTotalScan() >= 5) {
                 transaction.setStatus(TransactionStatus.DUNG_THU.getCode());
