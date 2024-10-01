@@ -1,8 +1,8 @@
-package org.pj.fee.Service.RabbitMQ;
+package org.pj.fee.service.rabbitMQ;
 
-import org.pj.fee.Config.RabbitMqConfig;
-import org.pj.fee.Dto.Request.FeeCommandDto;
-import org.pj.fee.Service.FeeCommand.FeeCommandProcessingService;
+import org.pj.fee.config.RabbitMqConfig;
+import org.pj.fee.dto.request.FeeCommandDTO;
+import org.pj.fee.service.feeCommand.FeeCommandProcessingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -22,7 +22,7 @@ public class FeeCommandConsumer {
     }
 
     @RabbitListener(queues = RabbitMqConfig.FEE_COMMAND_QUEUE)
-    public void receiveFeeCommand(FeeCommandDto feeCommandDto) {
+    public void receiveFeeCommand(FeeCommandDTO feeCommandDto) {
         logger.info("Received requestId: {} from queue", feeCommandDto.getRequestId());
         feeCommandProcessingService.processFeeCommand(feeCommandDto);
     }

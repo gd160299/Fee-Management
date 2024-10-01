@@ -1,9 +1,9 @@
-package org.pj.fee.Service.FeeCommand;
+package org.pj.fee.service.feeCommand;
 
-import org.pj.fee.Dto.Request.FeeCommandDto;
-import org.pj.fee.Entity.FeeTransaction;
-import org.pj.fee.Enum.TransactionStatus;
-import org.pj.fee.Repository.FeeTransactionRepository;
+import org.pj.fee.dto.request.FeeCommandDTO;
+import org.pj.fee.entity.FeeTransaction;
+import org.pj.fee.constant.EnumTransactionStatus;
+import org.pj.fee.repository.FeeTransactionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class FeeCommandProcessingService {
         this.feeTransactionRepository = feeTransactionRepository;
     }
 
-    public void processFeeCommand(FeeCommandDto feeCommandDto) {
+    public void processFeeCommand(FeeCommandDTO feeCommandDto) {
         logger.info("Begin processFeeCommand with requestId: {}", feeCommandDto.getRequestId());
 
         // Lấy thông tin các giao dịch theo commandCode
@@ -33,7 +33,7 @@ public class FeeCommandProcessingService {
         for (FeeTransaction transaction : transactions) {
             transaction.setTotalScan(1);
             transaction.setModifiedDate(LocalDateTime.now());
-            transaction.setStatus(TransactionStatus.THU_PHI.getCode());
+            transaction.setStatus(EnumTransactionStatus.THU_PHI.getCode());
         }
         feeTransactionRepository.saveAll(transactions);
         logger.info("Updated transactions with count: {}", transactions.size());

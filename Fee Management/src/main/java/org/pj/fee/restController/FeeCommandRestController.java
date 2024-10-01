@@ -1,9 +1,9 @@
-package org.pj.fee.RestController;
+package org.pj.fee.restController;
 
-import org.pj.fee.Dto.Request.FeeCommandDto;
-import org.pj.fee.Dto.Response.Response;
-import org.pj.fee.Service.FeeCommand.FeeCommandManagementService;
-import org.pj.fee.Service.RabbitMQ.FeeCommandProducer;
+import org.pj.fee.dto.request.FeeCommandDTO;
+import org.pj.fee.dto.response.Response;
+import org.pj.fee.service.feeCommand.FeeCommandManagementService;
+import org.pj.fee.service.rabbitMQ.FeeCommandProducer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +27,7 @@ public class FeeCommandRestController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Response<String>> addFeeCommand(@RequestBody @Valid FeeCommandDto feeCommandDto) {
+    public ResponseEntity<Response<String>> addFeeCommand(@RequestBody @Valid FeeCommandDTO feeCommandDto) {
         feeCommandManagementService.addFeeCommand(feeCommandDto);
         Response<String> response = Response.<String>builder()
                 .status(HttpStatus.OK.value())
@@ -37,7 +37,7 @@ public class FeeCommandRestController {
     }
 
     @PostMapping("/process")
-    public ResponseEntity<Response<String>> processFeeCommand(@RequestBody @Valid FeeCommandDto feeCommandDto) {
+    public ResponseEntity<Response<String>> processFeeCommand(@RequestBody @Valid FeeCommandDTO feeCommandDto) {
         feeCommandProducer.sendFeeCommand(feeCommandDto);
         Response<String> response = Response.<String>builder()
                 .status(HttpStatus.OK.value())

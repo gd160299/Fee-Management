@@ -1,4 +1,4 @@
-package org.pj.fee.Exception;
+package org.pj.fee.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

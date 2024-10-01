@@ -1,4 +1,4 @@
-package org.pj.fee.Config;
+package org.pj.fee.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

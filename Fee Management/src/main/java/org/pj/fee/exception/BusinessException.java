@@ -1,4 +1,4 @@
-package org.pj.fee.Exception;
+package org.pj.fee.exception;
 
 import lombok.Getter;
 

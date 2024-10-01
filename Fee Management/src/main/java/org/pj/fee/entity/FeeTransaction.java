@@ -1,4 +1,4 @@
-package org.pj.fee.Entity;
+package org.pj.fee.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

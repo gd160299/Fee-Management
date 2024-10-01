@@ -1,6 +1,6 @@
-package org.pj.fee.Repository;
+package org.pj.fee.repository;
 
-import org.pj.fee.Entity.FeeTransaction;
+import org.pj.fee.entity.FeeTransaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

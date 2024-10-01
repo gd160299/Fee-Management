@@ -1,4 +1,4 @@
-package org.pj.fee.Config;
+package org.pj.fee.config;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;

@@ -1,8 +1,8 @@
-package org.pj.fee.Service.FeeTransaction;
+package org.pj.fee.service.feeTransaction;
 
-import org.pj.fee.Entity.FeeTransaction;
-import org.pj.fee.Enum.TransactionStatus;
-import org.pj.fee.Repository.FeeTransactionRepository;
+import org.pj.fee.entity.FeeTransaction;
+import org.pj.fee.constant.EnumTransactionStatus;
+import org.pj.fee.repository.FeeTransactionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -26,7 +26,7 @@ public class FeeTransactionCronJobService {
     public void updateFeeTransactions() {
         logger.info("Begin updateFeeTransactions cron job");
 
-        List<FeeTransaction> transactions = feeTransactionRepository.findByStatusAndTotalScanLessThan(TransactionStatus.THU_PHI.getCode(), 5);
+        List<FeeTransaction> transactions = feeTransactionRepository.findByStatusAndTotalScanLessThan(EnumTransactionStatus.THU_PHI.getCode(), 5);
         logger.info("Transactions to update count: {}", transactions.size());
 
         for (FeeTransaction transaction : transactions) {
@@ -34,7 +34,7 @@ public class FeeTransactionCronJobService {
             transaction.setModifiedDate(LocalDateTime.now() );
 
             if (transaction.getTotalScan() >= 5) {
-                transaction.setStatus(TransactionStatus.DUNG_THU.getCode());
+                transaction.setStatus(EnumTransactionStatus.DUNG_THU.getCode());
             }
         }
         feeTransactionRepository.saveAll(transactions);

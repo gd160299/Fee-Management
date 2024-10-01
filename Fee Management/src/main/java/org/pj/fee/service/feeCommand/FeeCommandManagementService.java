@@ -1,12 +1,12 @@
-package org.pj.fee.Service.FeeCommand;
+package org.pj.fee.service.feeCommand;
 
-import org.pj.fee.Dto.Request.FeeCommandDto;
-import org.pj.fee.Entity.FeeCommand;
-import org.pj.fee.Entity.FeeTransaction;
-import org.pj.fee.Enum.TransactionStatus;
-import org.pj.fee.Exception.BusinessException;
-import org.pj.fee.Repository.FeeCommandRepository;
-import org.pj.fee.Repository.FeeTransactionRepository;
+import org.pj.fee.dto.request.FeeCommandDTO;
+import org.pj.fee.entity.FeeCommand;
+import org.pj.fee.entity.FeeTransaction;
+import org.pj.fee.constant.EnumTransactionStatus;
+import org.pj.fee.exception.BusinessException;
+import org.pj.fee.repository.FeeCommandRepository;
+import org.pj.fee.repository.FeeTransactionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class FeeCommandManagementService {
     }
 
     @Transactional
-    public void addFeeCommand(FeeCommandDto feeCommandDto) {
+    public void addFeeCommand(FeeCommandDTO feeCommandDto) {
         validate(feeCommandDto);
         logger.info("Begin addFeeCommand with requestId: {}", feeCommandDto.getRequestId());
         // Tạo mới FeeCommand
@@ -63,7 +63,7 @@ public class FeeCommandManagementService {
             transaction.setTransactionCode(generateUniqueTransactionCode());
             transaction.setCommandCode(feeCommand.getCommandCode());
             transaction.setFeeAmount(BigDecimal.ZERO); // Có thể điều chỉnh theo yêu cầu
-            transaction.setStatus(TransactionStatus.KHOI_TAO.getCode());
+            transaction.setStatus(EnumTransactionStatus.KHOI_TAO.getCode());
             transaction.setAccountNumber("abc");
             transaction.setTotalScan(0);
             transaction.setCreatedDate(LocalDateTime.now());
@@ -81,7 +81,7 @@ public class FeeCommandManagementService {
         logger.info("RequestId stored in Redis: {}", feeCommandDto.getRequestId());
     }
 
-    private void validate(FeeCommandDto feeCommandDto) {
+    private void validate(FeeCommandDTO feeCommandDto) {
         // Kiểm tra trùng requestId trong 1 ngày
         String requestIdKey = String.format("requestId:%s",feeCommandDto.getRequestId());
         Boolean isDuplicate = redisTemplate.hasKey(requestIdKey);

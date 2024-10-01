@@ -1,4 +1,4 @@
-package org.pj.fee.Dto.Response;
+package org.pj.fee.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;

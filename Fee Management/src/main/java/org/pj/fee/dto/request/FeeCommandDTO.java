@@ -1,4 +1,4 @@
-package org.pj.fee.Dto.Request;
+package org.pj.fee.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class FeeCommandDto {
+public class FeeCommandDTO {
     private String requestId;
     private String requestTime;
     private String commandCode;

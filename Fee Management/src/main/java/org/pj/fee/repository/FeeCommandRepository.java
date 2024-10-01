@@ -1,6 +1,6 @@
-package org.pj.fee.Repository;
+package org.pj.fee.repository;
 
-import org.pj.fee.Entity.FeeCommand;
+import org.pj.fee.entity.FeeCommand;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FeeCommandRepository extends JpaRepository<FeeCommand, Long> {
