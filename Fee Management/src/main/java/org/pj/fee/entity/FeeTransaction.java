@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "FEE_TRANSACTION")
@@ -21,6 +21,6 @@ public class FeeTransaction {
     private String accountNumber;
     private int totalScan;
     private String remark;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
+    private Timestamp createdDate;
+    private Timestamp modifiedDate;
 }

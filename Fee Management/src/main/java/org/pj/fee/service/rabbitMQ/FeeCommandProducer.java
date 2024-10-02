@@ -1,17 +1,17 @@
 package org.pj.fee.service.rabbitMQ;
 
+import lombok.extern.slf4j.Slf4j;
 import org.pj.fee.config.RabbitMqConfig;
+import org.pj.fee.constant.EnumError;
 import org.pj.fee.dto.request.FeeCommandDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.pj.fee.exception.BusinessException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class FeeCommandProducer {
-
-    private static final Logger logger = LoggerFactory.getLogger(FeeCommandProducer.class);
 
     private final RabbitTemplate rabbitTemplate;
 
@@ -21,9 +21,14 @@ public class FeeCommandProducer {
     }
 
     public void sendFeeCommand(FeeCommandDTO feeCommandDto) {
-        logger.info("Begin sendFeeCommand for requestId: {}", feeCommandDto.getRequestId());
-        rabbitTemplate.convertAndSend(RabbitMqConfig.FEE_COMMAND_QUEUE, feeCommandDto);
-        logger.info("Sent to queue successfully for requestId: {}", feeCommandDto.getRequestId());
+        log.info("Begin sendFeeCommand: {}", feeCommandDto);
+        try {
+            rabbitTemplate.convertAndSend(RabbitMqConfig.FEE_COMMAND_QUEUE, feeCommandDto);
+            log.info("Sent to queue successfully for requestId: {}", feeCommandDto.getRequestId());
+        } catch (Exception e) {
+            log.error("Error sending FeeCommand to queue", e);
+            throw new BusinessException(EnumError.INTERNAL_SERVER_ERROR.getCode(), EnumError.INTERNAL_SERVER_ERROR.getMessage());
+        }
     }
 }
 
