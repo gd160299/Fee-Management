@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Object> handleBusinessException(BusinessException ex) {
         Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("responseTime", ex.getTimestamp());
+        responseBody.put("responseTime", ex.getResponseTime());
         responseBody.put("code", ex.getCode());
         responseBody.put("msg", ex.getMessage());
         return new ResponseEntity<>(responseBody, HttpStatus.valueOf(ex.getCode()));

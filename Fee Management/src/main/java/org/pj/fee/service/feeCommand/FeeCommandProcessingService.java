@@ -1,13 +1,13 @@
 package org.pj.fee.service.feeCommand;
 
 import lombok.extern.slf4j.Slf4j;
+import org.pj.fee.constant.EnumError;
 import org.pj.fee.constant.EnumTransactionStatus;
 import org.pj.fee.dto.request.FeeCommandDTO;
 import org.pj.fee.entity.FeeTransaction;
 import org.pj.fee.exception.BusinessException;
 import org.pj.fee.repository.FeeTransactionRepository;
 import org.pj.fee.service.IFeeCommandProcessingService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -40,7 +40,7 @@ public class FeeCommandProcessingService implements IFeeCommandProcessingService
             log.info("Updated transactions with count: {}", transactions.size());
         } catch (Exception e) {
             log.error("Unexpected exception in processFeeCommand", e);
-            throw new BusinessException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal server error");
+            throw new BusinessException(EnumError.INTERNAL_SERVER_ERROR.getCode(), EnumError.INTERNAL_SERVER_ERROR.getMessage());
         }
         log.info("End processFeeCommand for requestId: {}", feeCommandDto.getRequestId());
     }

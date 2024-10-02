@@ -13,7 +13,6 @@ import org.pj.fee.repository.FeeTransactionRepository;
 import org.pj.fee.service.IFeeCommandManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +45,7 @@ public class FeeCommandManagementService implements IFeeCommandManagementService
     }
 
     @Transactional
-    public Object addFeeCommand(FeeCommandDTO feeCommandDto) {
+    public void addFeeCommand(FeeCommandDTO feeCommandDto) {
         log.info("Begin addFeeCommand: {}", feeCommandDto);
         try {
             validate(feeCommandDto);
@@ -81,10 +80,9 @@ public class FeeCommandManagementService implements IFeeCommandManagementService
             log.info("RequestId stored in Redis: {}", feeCommandDto.getRequestId());
         } catch (Exception e) {
             log.info("Unexpected exception in addFeeCommand", e);
-            throw new BusinessException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal server error");
+            throw new BusinessException(EnumError.INTERNAL_SERVER_ERROR.getCode(), EnumError.INTERNAL_SERVER_ERROR.getMessage());
         }
         log.info("End addFeeCommand for requestId: {}", feeCommandDto.getRequestId());
-        return new Object();
     }
 
     private void validate(FeeCommandDTO feeCommandDto) {
