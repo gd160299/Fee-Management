@@ -1,10 +1,8 @@
 package org.pj.fee.service.feeTransaction;
 
 import lombok.extern.slf4j.Slf4j;
-import org.pj.fee.constant.EnumError;
 import org.pj.fee.constant.EnumTransactionStatus;
 import org.pj.fee.entity.FeeTransaction;
-import org.pj.fee.exception.BusinessException;
 import org.pj.fee.repository.FeeTransactionRepository;
 import org.pj.fee.service.IFeeTransactionCronJobService;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,11 +13,11 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class FeeTransactionCronJobService implements IFeeTransactionCronJobService {
+public class FeeTransactionCronJobServiceImpl implements IFeeTransactionCronJobService {
 
     private final FeeTransactionRepository feeTransactionRepository;
 
-    public FeeTransactionCronJobService(FeeTransactionRepository feeTransactionRepository) {
+    public FeeTransactionCronJobServiceImpl(FeeTransactionRepository feeTransactionRepository) {
         this.feeTransactionRepository = feeTransactionRepository;
     }
 
@@ -41,10 +39,9 @@ public class FeeTransactionCronJobService implements IFeeTransactionCronJobServi
             }
             feeTransactionRepository.saveAll(transactions);
             log.info("Updated transactions count: {}", transactions.size());
+            log.info("End updateFeeTransactions cron job");
         } catch (Exception e) {
             log.error("Unexpected exception in updateFeeTransactions", e);
-            throw new BusinessException(EnumError.INTERNAL_SERVER_ERROR.getCode(), EnumError.INTERNAL_SERVER_ERROR.getMessage());
         }
-        log.info("End updateFeeTransactions cron job");
     }
 }

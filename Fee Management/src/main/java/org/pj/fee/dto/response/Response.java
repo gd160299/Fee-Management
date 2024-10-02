@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Data
 @Builder
@@ -12,6 +12,6 @@ import java.time.LocalDateTime;
 public class Response<T> {
     private int status;
     private String message;
-    private final LocalDateTime timestamp = LocalDateTime.now();
+    private final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     private T data;
 }

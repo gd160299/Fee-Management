@@ -1,11 +1,9 @@
 package org.pj.fee.service.feeCommand;
 
 import lombok.extern.slf4j.Slf4j;
-import org.pj.fee.constant.EnumError;
 import org.pj.fee.constant.EnumTransactionStatus;
 import org.pj.fee.dto.request.FeeCommandDTO;
 import org.pj.fee.entity.FeeTransaction;
-import org.pj.fee.exception.BusinessException;
 import org.pj.fee.repository.FeeTransactionRepository;
 import org.pj.fee.service.IFeeCommandProcessingService;
 import org.springframework.stereotype.Service;
@@ -15,11 +13,11 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class FeeCommandProcessingService implements IFeeCommandProcessingService {
+public class FeeCommandProcessingServiceImpl implements IFeeCommandProcessingService {
 
     private final FeeTransactionRepository feeTransactionRepository;
 
-    public FeeCommandProcessingService(FeeTransactionRepository feeTransactionRepository) {
+    public FeeCommandProcessingServiceImpl(FeeTransactionRepository feeTransactionRepository) {
         this.feeTransactionRepository = feeTransactionRepository;
     }
 
@@ -38,11 +36,10 @@ public class FeeCommandProcessingService implements IFeeCommandProcessingService
             }
             feeTransactionRepository.saveAll(transactions);
             log.info("Updated transactions with count: {}", transactions.size());
+            log.info("End processFeeCommand for requestId: {}", feeCommandDto.getRequestId());
         } catch (Exception e) {
             log.error("Unexpected exception in processFeeCommand", e);
-            throw new BusinessException(EnumError.INTERNAL_SERVER_ERROR.getCode(), EnumError.INTERNAL_SERVER_ERROR.getMessage());
         }
-        log.info("End processFeeCommand for requestId: {}", feeCommandDto.getRequestId());
     }
 }
 

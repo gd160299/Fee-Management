@@ -28,7 +28,7 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-public class FeeCommandManagementService implements IFeeCommandManagementService {
+public class FeeCommandManagementServiceImpl implements IFeeCommandManagementService {
 
     private final FeeCommandRepository feeCommandRepository;
 
@@ -37,8 +37,8 @@ public class FeeCommandManagementService implements IFeeCommandManagementService
     private final FeeTransactionRepository feeTransactionRepository;
 
     @Autowired
-    public FeeCommandManagementService(FeeCommandRepository feeCommandRepository, RedisTemplate<String, Object> redisTemplate,
-                                       FeeTransactionRepository feeTransactionRepository) {
+    public FeeCommandManagementServiceImpl(FeeCommandRepository feeCommandRepository, RedisTemplate<String, Object> redisTemplate,
+                                           FeeTransactionRepository feeTransactionRepository) {
         this.feeCommandRepository = feeCommandRepository;
         this.redisTemplate = redisTemplate;
         this.feeTransactionRepository = feeTransactionRepository;
@@ -78,11 +78,10 @@ public class FeeCommandManagementService implements IFeeCommandManagementService
             Duration timeToExpire = calculateTimeToEndOfDay();
             redisTemplate.opsForValue().set(requestIdKey, true, timeToExpire);
             log.info("RequestId stored in Redis: {}", feeCommandDto.getRequestId());
+            log.info("End : addFeeCommand successful");
         } catch (Exception e) {
             log.info("Unexpected exception in addFeeCommand", e);
-            throw new BusinessException(EnumError.INTERNAL_SERVER_ERROR.getCode(), EnumError.INTERNAL_SERVER_ERROR.getMessage());
         }
-        log.info("End addFeeCommand for requestId: {}", feeCommandDto.getRequestId());
     }
 
     private void validate(FeeCommandDTO feeCommandDto) {
