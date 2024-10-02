@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -14,6 +15,6 @@ public class FeeCommandDTO {
     private int totalRecord;
     private BigDecimal totalFee;
     private String createdUser;
-    private String createdDate;
+    private Timestamp createdDate;
 }
 

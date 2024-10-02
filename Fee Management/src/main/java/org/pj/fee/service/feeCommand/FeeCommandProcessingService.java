@@ -1,20 +1,21 @@
 package org.pj.fee.service.feeCommand;
 
+import lombok.extern.slf4j.Slf4j;
+import org.pj.fee.constant.EnumTransactionStatus;
 import org.pj.fee.dto.request.FeeCommandDTO;
 import org.pj.fee.entity.FeeTransaction;
-import org.pj.fee.constant.EnumTransactionStatus;
+import org.pj.fee.exception.BusinessException;
 import org.pj.fee.repository.FeeTransactionRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.pj.fee.service.IFeeCommandProcessingService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.List;
 
+@Slf4j
 @Service
-public class FeeCommandProcessingService {
-
-    private static final Logger logger = LoggerFactory.getLogger(FeeCommandProcessingService.class);
+public class FeeCommandProcessingService implements IFeeCommandProcessingService {
 
     private final FeeTransactionRepository feeTransactionRepository;
 
@@ -23,22 +24,25 @@ public class FeeCommandProcessingService {
     }
 
     public void processFeeCommand(FeeCommandDTO feeCommandDto) {
-        logger.info("Begin processFeeCommand with requestId: {}", feeCommandDto.getRequestId());
+        log.info("Begin processFeeCommand: {}", feeCommandDto);
+        try{
+            // Lấy thông tin các giao dịch theo commandCode
+            List<FeeTransaction> transactions = feeTransactionRepository.findByCommandCode(feeCommandDto.getCommandCode());
+            log.info("Retrieved transactions with count: {}", transactions.size());
 
-        // Lấy thông tin các giao dịch theo commandCode
-        List<FeeTransaction> transactions = feeTransactionRepository.findByCommandCode(feeCommandDto.getCommandCode());
-        logger.info("Retrieved transactions with count: {}", transactions.size());
-
-        // Cập nhật các giao dịch
-        for (FeeTransaction transaction : transactions) {
-            transaction.setTotalScan(1);
-            transaction.setModifiedDate(LocalDateTime.now());
-            transaction.setStatus(EnumTransactionStatus.THU_PHI.getCode());
+            // Cập nhật các giao dịch
+            for (FeeTransaction transaction : transactions) {
+                transaction.setTotalScan(1);
+                transaction.setModifiedDate(new Timestamp(System.currentTimeMillis()));
+                transaction.setStatus(EnumTransactionStatus.THU_PHI.getCode());
+            }
+            feeTransactionRepository.saveAll(transactions);
+            log.info("Updated transactions with count: {}", transactions.size());
+        } catch (Exception e) {
+            log.error("Unexpected exception in processFeeCommand", e);
+            throw new BusinessException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal server error");
         }
-        feeTransactionRepository.saveAll(transactions);
-        logger.info("Updated transactions with count: {}", transactions.size());
-
-        logger.info("End processFeeCommand for requestId: {}", feeCommandDto.getRequestId());
+        log.info("End processFeeCommand for requestId: {}", feeCommandDto.getRequestId());
     }
 }
 
