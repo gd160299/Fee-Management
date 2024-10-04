@@ -3,6 +3,7 @@ package org.pj.fee.service.feeTransaction;
 import lombok.extern.slf4j.Slf4j;
 import org.pj.fee.constant.EnumTransactionStatus;
 import org.pj.fee.entity.FeeTransaction;
+import org.pj.fee.exception.BusinessException;
 import org.pj.fee.repository.FeeTransactionRepository;
 import org.pj.fee.service.IFeeTransactionCronJobService;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.List;
+
+import static org.pj.fee.constant.EnumError.FEE_UPDATE_JOB_ERROR;
 
 @Slf4j
 @Service
@@ -42,6 +45,7 @@ public class FeeTransactionCronJobServiceImpl implements IFeeTransactionCronJobS
             log.info("End updateFeeTransactions cron job");
         } catch (Exception e) {
             log.error("Unexpected exception in updateFeeTransactions", e);
+            throw new BusinessException(FEE_UPDATE_JOB_ERROR.getCode(), FEE_UPDATE_JOB_ERROR.getMessage());
         }
     }
 }

@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.pj.fee.constant.EnumError.ADD_FEE_COMMAND_ERROR;
+
 @Slf4j
 @Service
 public class FeeCommandManagementServiceImpl implements IFeeCommandManagementService {
@@ -79,8 +81,12 @@ public class FeeCommandManagementServiceImpl implements IFeeCommandManagementSer
             redisTemplate.opsForValue().set(requestIdKey, true, timeToExpire);
             log.info("RequestId stored in Redis: {}", feeCommandDto.getRequestId());
             log.info("End : addFeeCommand successful");
+        } catch (BusinessException e) {
+            log.info("BusinessException in addFeeCommand: {}", e.getMessage());
+            throw e;
         } catch (Exception e) {
-            log.info("Unexpected exception in addFeeCommand", e);
+            log.error("Unexpected exception in addFeeCommand", e);
+            throw new BusinessException(ADD_FEE_COMMAND_ERROR.getCode(), ADD_FEE_COMMAND_ERROR.getMessage());
         }
     }
 
